@@ -36,15 +36,10 @@ environment:
 #      PYTHON_VERSION: "2.7.x" # currently 2.7.9
 #      PYTHON_ARCH: "64"
 
-services:
-  - docker
-
 install:
   - git clone -q https://github.com/nanaya-tachibana/oss-emulator.git
-  - ps: cd oss-emulator
   - ps: gem install thor builder
-  - ps: $OSSProcess = Start-Process ruby bin/emulator -r store -p 8880
-  - ps: cd ..
+  - ps: $OSSProcess = Start-Process ruby -ArgumentList 'bin/emulator' '-r' 'store' '-p' '8880' -WorkingDirectory "C:\\projects\\oss-emulator"
   - ps: Install-Product node
   - npm install -g azurite
   - ps: $AzuriteProcess = Start-Process azurite-blob -PassThru
