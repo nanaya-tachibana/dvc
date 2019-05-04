@@ -43,7 +43,7 @@ install:
   - ruby -v
   - gem install thor builder
   - ps: cd oss-emulator
-  - ps: $OSSProcess = Start-Job ruby -ArgumentList 'bin\emulator','-r','store','-p','50004'
+  - ps: $OSSProcess = Start-Process ruby -ArgumentList 'bin\emulator','-r','store','-p','50004','-q','false','-L','debug' -PassThru
   - ps: cd ..
   - netstat -na
   - npm install -g azurite
