@@ -180,9 +180,11 @@ class RemoteOSS(RemoteBase):
         resume=False,
     ):
         names = self._verify_path_args(from_infos, to_infos, names)
+
         for to_info, from_info, name in zip(to_infos, from_infos, names):
             if from_info["scheme"] != self.scheme:
                 raise NotImplementedError
+
             if to_info["scheme"] != "local":
                 raise NotImplementedError
 
