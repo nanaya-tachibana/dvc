@@ -40,9 +40,9 @@ services:
   - docker
 
 install:
-  - git clone git@github.com:nanaya-tachibana/oss-emulator.git
-  - docker image build -t oss:1.0 oss-emulator
-  - docker run --detach -p 8880:8880 --name oss-emulator oss:1.0
+  - git clone -q https://github.com/nanaya-tachibana/oss-emulator.git
+  - ps: docker image build -t oss:1.0 oss-emulator
+  - ps: docker run --detach -p 8880:8880 --name oss-emulator oss:1.0
   - ps: Install-Product node
   - npm install -g azurite
   - ps: $AzuriteProcess = Start-Process azurite-blob -PassThru
@@ -76,7 +76,7 @@ after_test:
 
 on_finish:
   - ps: Stop-Process $AzuriteProcess
-  - docker container stop oss-emulator
+  - ps: docker container stop oss-emulator
 
 artifacts:
   - path: dvc*.exe
