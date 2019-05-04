@@ -38,10 +38,11 @@ environment:
 #      PYTHON_ARCH: "64"
 
 install:
+  - SET PATH=%RUBY%;%PATH%
   - git clone -q https://github.com/nanaya-tachibana/oss-emulator.git
   - ps: gem install thor builder
   - ps: cd oss-emulator
-  - ps: ruby bin\emulator -r store -p 50004
+  - ps: ruby bin/emulator -r store -p 50004
   - ps: cd ..
   - netstat -na
   - npm install -g azurite
