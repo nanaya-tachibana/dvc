@@ -31,6 +31,8 @@ environment:
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "32"
 
+    - RUBY: "C:\Ruby25\bin"
+
 # Disabled as unnecessary
 #    - PYTHON: "C:\\Python27-x64"
 #      PYTHON_VERSION: "2.7.x" # currently 2.7.9
@@ -41,8 +43,11 @@ services:
 
 install:
   - git clone -q https://github.com/nanaya-tachibana/oss-emulator.git
-  - ps: docker image build -t oss:1.0 oss-emulator
-  - ps: docker run --detach -p 8880:8880 --name oss-emulator oss:1.0
+  - ps: cd oss-emulator
+  - ps: mkdir store
+  - ps: gem install thor builder
+  - ps: $OSSProcess = Start-Process ruby bin/emulator -r store -p 8880
+  - ps: cd ..
   - ps: Install-Product node
   - npm install -g azurite
   - ps: $AzuriteProcess = Start-Process azurite-blob -PassThru
@@ -76,7 +81,7 @@ after_test:
 
 on_finish:
   - ps: Stop-Process $AzuriteProcess
-  - ps: docker container stop oss-emulator
+  - ps: Stop-Process $OSSProcess
 
 artifacts:
   - path: dvc*.exe
