@@ -40,7 +40,7 @@ install:
   - git clone -q https://github.com/nanaya-tachibana/oss-emulator.git
   - ps: C:\Ruby25\bin\gem install thor builder
   - ps: cd oss-emulator
-  - ps: $OSSProcess = Start-Process C:\Ruby25\bin\ruby -ArgumentList 'bin\emulator','-r','store','-p','50004' -PassThru
+  - ps: C:\Ruby25\bin\ruby bin\emulator -r store -p 50004
   - ps: cd ..
   - netstat -na
   - npm install -g azurite
