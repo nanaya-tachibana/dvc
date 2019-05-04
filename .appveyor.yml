@@ -30,6 +30,7 @@ environment:
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "32"
+      RUBY: "C:\\Ruby25\bin"
 
 # Disabled as unnecessary
 #    - PYTHON: "C:\\Python27-x64"
@@ -38,9 +39,9 @@ environment:
 
 install:
   - git clone -q https://github.com/nanaya-tachibana/oss-emulator.git
-  - ps: C:\Ruby25\bin\gem install thor builder
+  - ps: gem install thor builder
   - ps: cd oss-emulator
-  - ps: C:\Ruby25\bin\ruby bin\emulator -r store -p 50004
+  - ps: ruby bin\emulator -r store -p 50004
   - ps: cd ..
   - netstat -na
   - npm install -g azurite
