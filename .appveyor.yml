@@ -20,6 +20,10 @@ environment:
     secure: XN4jRtmGE5Bqg8pPZkwNs7kn3UEI73Rkldqc0MGsQISZBm5TNJZOPofDMc1QnUsf
   AZURE_STORAGE_CONTAINER_NAME: appveyor-tests
   AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;
+  OSS_BUCKET: my-bucket
+  OSS_ENDPOINT: localhost:8880
+  OSS_ACCESS_KEY_ID: AccessKeyID
+  OSS_ACCESS_KEY_SECRET: AccessKeySecret
 
   matrix:
 
@@ -32,7 +36,13 @@ environment:
 #      PYTHON_VERSION: "2.7.x" # currently 2.7.9
 #      PYTHON_ARCH: "64"
 
+services:
+  - docker
+
 install:
+  - git clone git@github.com:nanaya-tachibana/oss-emulator.git
+  - docker image build -t oss:1.0 oss-emulator
+  - docker run --detach -p 8880:8880 --name oss-emulator oss:1.0
   - ps: Install-Product node
   - npm install -g azurite
   - ps: $AzuriteProcess = Start-Process azurite-blob -PassThru
@@ -66,6 +76,7 @@ after_test:
 
 on_finish:
   - ps: Stop-Process $AzuriteProcess
+  - docker container stop oss-emulator
 
 artifacts:
   - path: dvc*.exe
